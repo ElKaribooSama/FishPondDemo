@@ -1,3 +1,4 @@
+let normalFishBodySegmentSizes = [68, 81, 84, 78, 74, 64, 54, 44, 34, 24,12,0]
 
 function normalFishBody(fish: Fish) {
   stroke(255)
@@ -13,18 +14,18 @@ function normalFishBody(fish: Fish) {
 
     for (let i = fish.chain.npoint-1; i >= 1; i--) {
       point = fish.chain.point_position[i]
-      pos = parametric_equation(radians(90) + fish.chain.angles[i-1]).scale(fish.body_segment_sizes[i]/2).add(point)
+      pos = parametric_equation(radians(90) + fish.chain.angles[i-1]).scale(normalFishBodySegmentSizes[i]*fish.size/2).add(point)
       curveVertex(pos.x,pos.y)
     }
 
     for (let i = 0; i < headangles.length; i++) {
-      pos = parametric_equation(radians(headangles[i]) + fish.chain.angles[0]).scale(fish.body_segment_sizes[0]/2).add(headposition)
+      pos = parametric_equation(radians(headangles[i]) + fish.chain.angles[0]).scale(normalFishBodySegmentSizes[0]*fish.size/2).add(headposition)
       curveVertex(pos.x,pos.y)    
     }
 
     for (let i = 1; i < fish.chain.npoint; i++) {
       point = fish.chain.point_position[i]
-      pos = parametric_equation(radians(270) + fish.chain.angles[i-1]).scale(fish.body_segment_sizes[i]/2).add(point)
+      pos = parametric_equation(radians(270) + fish.chain.angles[i-1]).scale(normalFishBodySegmentSizes[i]*fish.size/2).add(point)
       curveVertex(pos.x,pos.y)
     }
 

@@ -4,12 +4,18 @@ class FishBehavior {
   start_lerp_time: number
   target: Vec2
   last_target: Vec2
+  boundary: Boundary
+
+  constructor() {
+    this.target = new Vec2(0,0)
+    this.last_target = new Vec2(0,0)
+  }
 
   update(fish: Fish) {
     let timeElapsed = (Date.now() - this.start_lerp_time) / 1000 // in seconds
     let lerpTime = 1
     
-    lerp_target(timeElapsed/lerpTime)
+    fish.movement_target = lerp_target(this.last_target,this.target,timeElapsed/lerpTime)
     if(timeElapsed/lerpTime > 1) {
       this.new_direction(fish)
     }
@@ -43,33 +49,20 @@ class FishBehavior {
 
   private new_direction(fish: Fish) { 
     let targetDistance = 50
-    let homeBehaviorChangeDistance = 200
-    let homeMaxDistance = 600
-
-    
     let headPoint = fish.chain.point_position[0]
-    let homeDistance = headPoint.dist(fish.home)
 
-    if (homeDistance < homeMaxDistance && homeDistance < homeBehaviorChangeDistance) {
+    if (this.boundary.isInside(headPoint)) {
       let chosenAngle = random(-50,50)
       this.change_target(this.target_from_angle(targetDistance,chosenAngle,fish))
-      console.log("changing angle by :", chosenAngle)
-    }
-
-    if (homeDistance > homeMaxDistance) {
-      console.log("returning home")
-      this.change_target(fish.home)
-    }
-
-    if (homeDistance > homeBehaviorChangeDistance) {
+    } else {
       let angles = [random(-50,-15),random(-15,15),random(15,50)]
       let smallest = this.target_from_angle(targetDistance,angles[0],fish)
       
       for(let i=1;i<angles.length;i++) {
           let newpos = this.target_from_angle(targetDistance,angles[i],fish)
-          if (newpos.dist(fish.home) < smallest.dist(fish.home)) smallest = newpos
+          if (newpos.dist(this.boundary.center) < smallest.dist(this.boundary.center)) smallest = newpos
       }
-      this.change_target(smallest)
+      this.change_target(this.boundary.cen)
     }
   }
 }

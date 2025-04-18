@@ -59,8 +59,8 @@ function normalize_angle(theta:number) : number {
   return theta - (theta > RAD360DEG ? RAD360DEG : (theta < 0 ? -RAD360DEG : 0))
 } 
 
-function lerp_target(at: number) {
-  let x = lerp(this.last_target.x,this.target.x,at)
-  let y = lerp(this.last_target.y,this.target.y,at)
-  this.movement_target = new Vec2(x,y)
+function lerp_target(a: Vec2, b: Vec2, at: number) {
+  let x = lerp(a.x,b.x,at)
+  let y = lerp(a.y,b.y,at)
+  return new Vec2(x,y)
 }
