@@ -5,6 +5,7 @@ let boundary: Boundary
 let allFish: Array<Fish> = []
 let FISHAMOUNT = 50
 
+let BOUNDARYKEEPAWAYDISTANCE = 100
 let MOVEMENTSPEED = 2
 let middlePosition = {
   x: 0,
@@ -88,7 +89,7 @@ function draw() {
   updateAllfish()
   drawAllfish()
   background(95, 214, 232,125)
-  // boundary.render()
+  boundary.render()
 
   if (mouseIsPressed) {
     allFish[0].move_toward(new Vec2(mouseX,mouseY))

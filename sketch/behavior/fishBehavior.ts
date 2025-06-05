@@ -48,21 +48,30 @@ class FishBehavior {
   }
 
   private new_direction(fish: Fish) { 
-    let targetDistance = 50
+    let targetDistance = 10
     let headPoint = fish.chain.point_position[0]
 
-    if (this.boundary.isInside(headPoint)) {
-      let chosenAngle = random(-50,50)
-      this.change_target(this.target_from_angle(targetDistance,chosenAngle,fish))
-    } else {
-      let angles = [random(-50,-15),random(-15,15),random(15,50)]
-      let smallest = this.target_from_angle(targetDistance,angles[0],fish)
+    let closestPointOnBoundary = this.boundary.distToBoundary(headPoint)
+
+    if (!this.boundary.isInside(headPoint)) {
+      this.change_target(this.boundary.center)
+      return
+    }
+
+    if (closestPointOnBoundary.dist(headPoint) < BOUNDARYKEEPAWAYDISTANCE) {  
+      let angles = [random(-50,-35),random(-35,35),random(35,50)]
+      let best = this.target_from_angle(targetDistance,angles[0],fish)
       
       for(let i=1;i<angles.length;i++) {
           let newpos = this.target_from_angle(targetDistance,angles[i],fish)
-          if (newpos.dist(this.boundary.center) < smallest.dist(this.boundary.center)) smallest = newpos
+          if (newpos.dist(closestPointOnBoundary) > best.dist(closestPointOnBoundary)) best = newpos
       }
-      this.change_target(this.boundary.cen)
+
+      this.change_target(best)
+      return
     }
+
+    let chosenAngle = random(-50,50)
+    this.change_target(this.target_from_angle(targetDistance,chosenAngle,fish))
   }
 }

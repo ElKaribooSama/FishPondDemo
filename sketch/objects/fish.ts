@@ -19,7 +19,7 @@ class Fish {
     this.movement_target = new Vec2(0,0)
     this.type = FishType.Base
 
-    this.color = new Color(58, 124, 165)
+    this.color = new Color(86, 124, 165)
   }
 
   public change_size(size: Vec2) {

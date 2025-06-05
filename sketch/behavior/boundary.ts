@@ -18,6 +18,35 @@ class Boundary {
     pop()
   }
 
+  public distToBoundary(p: Vec2) {
+    let s_distance = Number.MAX_VALUE
+    let s_point = new Vec2()
+
+    for (let i = 1; i < this.vertexes.length; i++) {
+      let a = this.vertexes[i-1].copy()
+      let b = this.vertexes[i].copy()
+
+      let ab = b.copy().sub(a);
+      let ap = p.copy().sub(a)
+
+      let proj = ap.dot(ab)
+      let ablensquared = ab.len() * ab.len()
+      let d = proj / ablensquared
+
+      let scaling = min(max(0,d),1)  
+
+      let closestPoint = a.add(ab.scale(scaling))
+      let distToP = p.dist(closestPoint)
+      
+      if (s_distance > distToP) {
+        s_distance = distToP
+        s_point = closestPoint
+      }
+    }
+
+    return s_point
+  }
+
   public calculateMiddle() {
     this.center.x = 0
     this.center.y = 0
